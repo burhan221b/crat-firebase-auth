@@ -1,25 +1,62 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import SignUp from './components/SignUp';
+import './styles/Reset.scss';
+import './styles/App.scss';
+import { AuthProvider } from './context/AuthContext';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Dashboard from './components/Dashboard';
+import Login from './components/Login';
+import ForgotPassword from './components/ForgotPassword';
+import NotFound404 from './components/NotFound404';
+import PrivateRoute from './hoc/PrivateRoute';
+import UpdateProfile from './components/UpdateProfile';
+import PublicRoute from './hoc/PublicRoute';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <AuthProvider>
+        <div className="App">
+          <Routes>
+            {/* Root goes to dashboard  */}
+            {/* <Route path="/" element={
+              //https://ui.dev/react-router-protected-routes-authentication/
+              <PrivateRoute>
+                <Dashboard />
+              </PrivateRoute>
+            } /> */}
+            <Route path="/dashboard" element={
+              //https://ui.dev/react-router-protected-routes-authentication/
+              <PrivateRoute>
+                <Dashboard />
+              </PrivateRoute>
+            } />
+            <Route path="/update-profile" element={
+              //https://ui.dev/react-router-protected-routes-authentication/
+              <PrivateRoute>
+                <UpdateProfile />
+              </PrivateRoute>
+            } />
+            <Route path="/signup" element={
+              <PublicRoute>
+                <SignUp />
+              </PublicRoute>
+            } />
+            <Route path="/login" element={
+              <PublicRoute>
+                <Login />
+              </PublicRoute>
+            } />
+            <Route path="/forgot-password" element={
+              <PublicRoute>
+                <ForgotPassword />
+              </PublicRoute>
+            } />
+            <Route path="*" element={<NotFound404 />} />
+          </Routes>
+        </div>
+      </AuthProvider>
+    </BrowserRouter>
   );
 }
 
